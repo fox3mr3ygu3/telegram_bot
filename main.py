@@ -11,7 +11,7 @@ def handle_message(update: Update, context: CallbackContext) -> None:
     if user_text in ["сервер", "server"]:
         result = parser()
          
-    elif user_text in ["топ", "top"]:
+    elif user_text == "top":
         result = top()
          
     if not result:

@@ -96,9 +96,7 @@ def top():
                     "skill_raw": skill_raw
                 })
 
-        # Sort by skill descending
-        players.sort(key=lambda p: p["skill"], reverse=True)
-
+        
         # Display with rank emojis
         for index, p in enumerate(players, start=1):
             if index == 1:
