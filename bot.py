@@ -1,5 +1,34 @@
 import requests
 from bs4 import BeautifulSoup
+from telegram import Update
+from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
+from config import bot_token
+
+def handle_message(update: Update, context: CallbackContext) -> None:
+    user_text = update.message.text.strip().lower()
+    result = None
+
+    if user_text in ["сервер", "server"]:
+        result = parser()
+    elif user_text == "top":
+        result = top()
+
+    if not result:
+        return
+
+    if len(result) > 4000:
+        for i in range(0, len(result), 4000):
+            update.message.reply_text(result[i:i+4000])
+    else:
+        update.message.reply_text(result)
+
+def run_bot():
+    updater = Updater(bot_token, use_context=True)
+    dispatcher = updater.dispatcher
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
+    print("🤖 Бот запущен. Ожидаем сообщения.")
+    updater.start_polling()
+    updater.idle()
 
 def parser():
     url = "https://www.gs4u.net/ru/s/373896.html"
@@ -8,7 +37,6 @@ def parser():
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Начинаем собирать результат как текст
     result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n"
 
     try:
@@ -28,8 +56,8 @@ def parser():
     try:
         table = soup.find("table", class_="serverplayers")
         rows = table.find("tbody").find_all("tr")
-
         result += "📋 Список игроков:\n"
+
         for i, row in enumerate(rows, start=1):
             cols = row.find_all("td")
             if len(cols) >= 3:
@@ -43,18 +71,13 @@ def parser():
 
     return result
 
-
 def top():
     url = "https://onerussiapublic.ru/stats"
     headers = {"User-Agent": "Mozilla/5.0"}
-
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n"
-    result += "46.174.48.168:27015\n\n"
-    result += "📋 Топ игроков:\n\n"
-
+    result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n\n📋 Топ игроков:\n\n"
     players = []
 
     try:
@@ -65,20 +88,15 @@ def top():
         for row in rows:
             cols = row.find_all("td", recursive=False)
             if len(cols) >= 6 and "Статистика игрока" not in row.text:
-
                 profile_td = cols[1]
                 i_tag = profile_td.find("i")
                 if i_tag:
                     nick = i_tag.get_text(strip=True)
                 else:
                     img_tag = profile_td.find("img")
-                    if img_tag and img_tag.has_attr("alt"):
-                        nick = img_tag["alt"].strip()
-                    else:
-                        nick = profile_td.get_text(strip=True)
+                    nick = img_tag["alt"].strip() if img_tag and img_tag.has_attr("alt") else profile_td.get_text(strip=True)
 
                 nick = nick.replace("`", "'")
-
                 kills = cols[2].text.strip()
                 deaths = cols[3].text.strip()
                 headshot = cols[4].text.strip()
@@ -96,8 +114,6 @@ def top():
                     "skill_raw": skill_raw
                 })
 
-        
-        # Display with rank emojis
         for index, p in enumerate(players, start=1):
             if index == 1:
                 rank = "🥇-место-> "
@@ -120,4 +136,3 @@ def top():
         result += "⚠️ Таблица не найдена или структура изменилась.\n"
 
     return result
-
