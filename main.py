@@ -15,7 +15,6 @@ def handle_message(update: Update, context: CallbackContext) -> None:
         result = top()
          
     if not result:
-        update.message.reply_text("⚠️ Ошибка: ответ пуст.")
         return
 
     if len(result) > 4000:
