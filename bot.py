@@ -1,4 +1,5 @@
 import time
+import a2s
 import requests
 from bs4 import BeautifulSoup
 from telegram import Update
@@ -31,50 +32,35 @@ def run_bot():
     updater.start_polling()
     updater.idle()
 
+
 def parser():
-    timestamp = int(time.time())
-    url = f"https://www.gs4u.net/ru/s/373896.html?_={timestamp}"
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache"
-    }
-
-    response = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response.text, "html.parser")
-
+    address = ("46.174.48.168", 27015)
     result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n"
 
     try:
-        map_div = soup.find("div", class_="inlineblocktop map")
-        map_text = map_div.find("a", class_="hasTooltip").text.strip()
-        result += f"🗺️  Карта: {map_text}\n"
-    except:
-        result += "🗺️  Карта: неизвестна\n"
+        info = a2s.info(address)
+        players = a2s.players(address)
 
-    try:
-        online_div = soup.find("div", class_="value players")
-        online_text = online_div.find("b").text.strip()
-        result += f"🎮⚡ Онлайн: {online_text}/32\n\n"
-    except:
-        result += "🎮⚡ Онлайн: неизвестно\n\n"
+        result += f"🗺️  Карта: {info.map_name}\n"
+        result += f"🎮⚡ Онлайн: {info.player_count}/{info.max_players}\n\n"
 
-    try:
-        table = soup.find("table", class_="serverplayers")
-        rows = table.find("tbody").find_all("tr")
-        result += "📋 Список игроков:\n"
+        if not players:
+            result += "Нету игроков на сервере"
+        else:
+            result += "📋 Список игроков:\n"
+            for i, p in enumerate(players, 1):
+                name = p.name or "Без имени"
+                score = p.score
+                duration = int(p.duration)
+                mins = duration // 60
+                secs = duration % 60
+                result += f"{i}) {name} | Фраги: {score} | Время: {mins}м {secs}с\n"
 
-        for i, row in enumerate(rows, start=1):
-            cols = row.find_all("td")
-            if len(cols) >= 3:
-                nick = cols[0].text.strip()
-                score = cols[1].text.strip()
-                time_played = cols[2].text.strip()
-                result += f"{i}) {nick} | Фраги: {score} | Время: {time_played}\n"
-    except AttributeError:
-        result += "Нету игроков на сервере"
+    except Exception as e:
+        result += f"\n❌ Ошибка при подключении: {e}"
 
     return result
+
 
 def top():
     timestamp = int(time.time())
