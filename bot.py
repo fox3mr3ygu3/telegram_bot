@@ -1,3 +1,4 @@
+import time
 import requests
 from bs4 import BeautifulSoup
 from telegram import Update
@@ -31,11 +32,12 @@ def run_bot():
     updater.idle()
 
 def parser():
-    url = "https://www.gs4u.net/ru/s/373896.html"
+    timestamp = int(time.time())
+    url = f"https://www.gs4u.net/ru/s/373896.html?_={timestamp}"
     headers = {
-    "User-Agent": "Mozilla/5.0",
-    "Cache-Control": "no-cache",
-    "Pragma": "no-cache"
+        "User-Agent": "Mozilla/5.0",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
     }
 
     response = requests.get(url, headers=headers)
@@ -69,19 +71,20 @@ def parser():
                 score = cols[1].text.strip()
                 time_played = cols[2].text.strip()
                 result += f"{i}) {nick} | Фраги: {score} | Время: {time_played}\n"
-
     except AttributeError:
         result += "Нету игроков на сервере"
 
     return result
 
 def top():
-    url = "https://onerussiapublic.ru/stats"
+    timestamp = int(time.time())
+    url = f"https://onerussiapublic.ru/stats?_={timestamp}"
     headers = {
-    "User-Agent": "Mozilla/5.0",
-    "Cache-Control": "no-cache",
-    "Pragma": "no-cache"
-    }      
+        "User-Agent": "Mozilla/5.0",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
+    }
+
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -139,8 +142,11 @@ def top():
                 f"🎯 {str(p['hs']).ljust(3)}  "
                 f"📈 {p['skill_raw']}\n"
             )
-
     except AttributeError:
         result += "⚠️ Таблица не найдена или структура изменилась.\n"
 
     return result
+
+# Запуск бота
+if __name__ == "__main__":
+    run_bot()
