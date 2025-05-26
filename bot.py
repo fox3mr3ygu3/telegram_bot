@@ -32,7 +32,11 @@ def run_bot():
 
 def parser():
     url = "https://www.gs4u.net/ru/s/373896.html"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    headers = {
+    "User-Agent": "Mozilla/5.0",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache"
+    }
 
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -73,7 +77,11 @@ def parser():
 
 def top():
     url = "https://onerussiapublic.ru/stats"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    headers = {
+    "User-Agent": "Mozilla/5.0",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache"
+    }      
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
