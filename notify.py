@@ -1,7 +1,6 @@
-import time
 import a2s
 import requests
-from config import bot_token, server_ip, chat_id
+from config import bot_token, chat_id
 
 # Server and Telegram Bot Config
 SERVER_ADDRESS = ("46.174.48.168", 27015)
