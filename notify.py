@@ -10,11 +10,11 @@ CHAT_ID = chat_id
 
 # Players to watch
 TARGET_MEN = {
-    "white763", "Гаджет", "ChipWar", "X?", "SKOVER", "NarKotiK", "shakаl", "Nikitanos763",
-    "Fnatik", "MapeD", "xddd", "LLirik", "kuniman", "PUPSIK", "VaLeRka 72", "hoho^", "Medved",
-    "sokol", "Doctor", "dA-60Jlb", "[ORP] SHkiper", "Mamlyutskiy Killer Ivan", "дядя АМИР",
-    "не обижайся", "Ковен", "007", "тень", "ORP Who s next", "BERSERKER", "SWAG :)", "ProtoTip4ik",
-    "bb_814"
+        "white763", "Гаджет", "ChipWar", "SKOVER", "NarKotiK", "shakаl", "Nikitanos763",
+        "Fnatik", "MapeD", "xddd", "LLirik", "kuniman", "PUPSIK", "VaLeRka 72", "Medved",
+        "sokol", "Doctor", "dA-60Jlb", "[ORP] SHkiper", "Mamlyutskiy Killer Ivan", "дядя АМИР",
+        "не обижайся", "Ковен", "007", "тень", "ORP Who s next", "BERSERKER", "ProtoTip4ik",
+        "bb_814"
 }
 TARGET_WOMEN = {
     "Ная",                              
