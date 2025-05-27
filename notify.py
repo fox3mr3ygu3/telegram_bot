@@ -10,7 +10,7 @@ CHAT_ID = chat_id
 
 # Players to watch
 TARGET_MEN = {
-        "bb_814", 
+        "'bb_814'", 
 }
 TARGET_WOMEN = {
     "KOFEMANKA"          
