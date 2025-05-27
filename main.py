@@ -20,7 +20,11 @@ def run_checker():
 
 
 if __name__ == "__main__":
-    Thread(target=run_flask).start()
-    Thread(target=run_checker).start()
-    run_bot()
+    Thread(target=run_flask, daemon=True).start()
+    Thread(target=run_checker, daemon=True).start()
+    Thread(target=run_bot, daemon=True).start()
+
+    # Keep main thread alive
+    while True:
+        time.sleep(60)
     
