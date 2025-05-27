@@ -70,7 +70,7 @@ def run_bot():
 
 
 def parser():
-    address = (server_ip, 27015)
+    address = ("46.174.48.168", 27015)
     result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n"
 
     try:
