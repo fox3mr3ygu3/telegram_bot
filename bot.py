@@ -169,6 +169,4 @@ def top():
 
     return result
 
-# Запуск бота
-if __name__ == "__main__":
-    run_bot()
+

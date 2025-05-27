@@ -21,10 +21,8 @@ def run_checker():
 
 if __name__ == "__main__":
     Thread(target=run_flask, daemon=True).start()
-    Thread(target=run_checker, daemon=True).start()
+    Thread(target=run_checker, daemon=False).start()
     run_bot()
 
-    # Keep main thread alive
-    while True:
-        time.sleep(60)
+   
     
