@@ -87,7 +87,7 @@ def parser():
             for i, p in enumerate(players, 1):
                 name = p.name or "Без имени"
                 score = p.score
-                duration = int(p.duration)
+                duration = int(p.duration or 0)
                 mins = duration // 60
                 secs = duration % 60
                 result += f"{i}) {name} | Фраги: {score} | Время: {mins}м {secs}с\n"
