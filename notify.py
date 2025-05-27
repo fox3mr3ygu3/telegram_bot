@@ -33,9 +33,11 @@ def get_player_type(name):
 
 def check_players():
     global previous_online_tracked
+    print("🔁 check_players() is running")
     try:
         # Get current players
         players = a2s.players(SERVER_ADDRESS)
+        print("🧍 Players found:", [repr(p.name) for p in players])
         online_now = {p.name.strip() for p in players if p.name.strip()}
 
         # Combine both watchlists
