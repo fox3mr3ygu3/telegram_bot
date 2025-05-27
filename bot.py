@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
-from config import bot_token, server_ip, server_port
+from config import bot_token, server_ip
 from notify import TARGET_MEN, TARGET_WOMEN
 
 def handle_message(update: Update, context: CallbackContext) -> None:
@@ -70,7 +70,7 @@ def run_bot():
 
 
 def parser():
-    address = (server_ip, server_port)
+    address = (server_ip, 27015)
     result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n"
 
     try:

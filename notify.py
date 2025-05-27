@@ -1,10 +1,10 @@
 import time
 import a2s
 import requests
-from config import bot_token, server_ip, server_port, chat_id
+from config import bot_token, server_ip, chat_id
 
 # Server and Telegram Bot Config
-SERVER_ADDRESS = (server_ip, server_port)
+SERVER_ADDRESS = (server_ip, 27015)
 BOT_TOKEN = bot_token
 CHAT_ID = chat_id
 
