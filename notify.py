@@ -4,7 +4,7 @@ import requests
 from config import bot_token, server_ip, chat_id
 
 # Server and Telegram Bot Config
-SERVER_ADDRESS = (server_ip, 27015)
+SERVER_ADDRESS = ("46.174.48.168", 27015)
 BOT_TOKEN = bot_token
 CHAT_ID = chat_id
 
