@@ -10,7 +10,7 @@ CHAT_ID = chat_id
 
 # Players to watch
 TARGET_MEN = {
-        "'bb_814'", 
+        "bb_814", 
 }
 TARGET_WOMEN = {
     "KOFEMANKA"          
@@ -38,7 +38,10 @@ def check_players():
         # Get current players
         players = a2s.players(SERVER_ADDRESS)
         print("🧍 Players found:", [repr(p.name) for p in players])
-        online_now = {p.name.strip() for p in players if p.name.strip()}
+        online_now = {
+        p.name.strip().replace("'", "").replace('"', "")
+        for p in players if p.name.strip()
+        }
 
         # Combine both watchlists
         all_tracked_players = TARGET_MEN | TARGET_WOMEN
