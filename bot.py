@@ -4,16 +4,52 @@ import requests
 from bs4 import BeautifulSoup
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
-from config import bot_token
+from config import bot_token, server_ip, server_port
+from notify import TARGET_MEN, TARGET_WOMEN
 
 def handle_message(update: Update, context: CallbackContext) -> None:
-    user_text = update.message.text.strip().lower()
+    user_text = update.message.text.strip()
+    user_text_lower = user_text.lower()
     result = None
 
-    if user_text in ["сервер", "server"]:
+    if user_text_lower in ["сервер", "server"]:
         result = parser()
-    elif user_text == "top":
+
+    elif user_text_lower == "top":
         result = top()
+
+    elif user_text_lower == "инфо":
+        result = (
+            "🤖 Информация о боте\n\n"
+            "Этот бот следит за CS 1.6 сервером:\n"
+            "`ONE RUSSIAN PUBLIC © (46.174.48.168:27015)`\n\n"
+            "📌 Команды:\n"
+            "• сервер или server — текущая карта, онлайн и список игроков\n"
+            "• top — топ игроков со статистикой\n"
+            "• инфо — информация о боте\n"
+            "• w_Ник — добавить ник в список отслеживания -> для Дам\n"
+            "• m_Ник — добавить ник в список отслеживания -> для Джентльменов\n\n"
+        )
+
+    elif user_text_lower.startswith("w_"):
+        nickname = user_text[2:].strip()  # preserve original case
+        if not nickname:
+            result = "⚠️ Укажите ник после 'w_'"
+        elif nickname in TARGET_WOMEN:
+            result = f"⚠️ Ник *{nickname}* уже есть в списке."
+        else:
+            TARGET_WOMEN.add(nickname)
+            result = f"🌸 Игрок *{nickname}* добавлена в список слеживания."
+
+    elif user_text_lower.startswith("m_"):
+        nickname = user_text[2:].strip()
+        if not nickname:
+            result = "⚠️ Укажите ник после 'm_'"
+        elif nickname in TARGET_MEN:
+            result = f"⚠️ Ник *{nickname}* уже есть в списке."
+        else:
+            TARGET_MEN.add(nickname)
+            result = f"🧢 Игрок {nickname} добавлен в список слеживания."
 
     if not result:
         return
@@ -34,7 +70,7 @@ def run_bot():
 
 
 def parser():
-    address = ("46.174.48.168", 27015)
+    address = (server_ip, server_port)
     result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n"
 
     try:
