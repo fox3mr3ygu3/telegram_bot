@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 from config import bot_token, server_ip
-from notify import TARGET_MEN, TARGET_WOMEN
+from notify import TARGET_MEN, TARGET_WOMEN, check_players
 
 def handle_message(update: Update, context: CallbackContext) -> None:
     user_text = update.message.text.strip()
@@ -60,10 +60,19 @@ def handle_message(update: Update, context: CallbackContext) -> None:
     else:
         update.message.reply_text(result)
 
+
+def callback_check_players(context: CallbackContext):
+    try:
+        check_players()
+    except Exception as e:
+        print("❌ check_players error:", e)
+
+
 def run_bot():
     updater = Updater(bot_token, use_context=True)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
+    updater.job_queue.run_repeating(callback_check_players, interval=10, first=5)
     print("🤖 Бот запущен. Ожидаем сообщения.")
     updater.start_polling()
     updater.idle()
