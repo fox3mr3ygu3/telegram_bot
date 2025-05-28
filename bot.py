@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 from config import bot_token, db_url
-from notify import TARGET_MEN, TARGET_WOMEN, check_players
+
 
 def add_player(name: str, gender: str) -> bool:
     name = name.strip()
@@ -47,35 +47,9 @@ def handle_message(update: Update, context: CallbackContext) -> None:
             "• сервер или server — текущая карта, онлайн и список игроков\n"
             "• top — топ игроков со статистикой\n"
             "• инфо — информация о боте\n"
-            "• w_Ник — добавить ник в список отслеживания -> для Дам\n"
-            "• m_Ник — добавить ник в список отслеживания -> для Джентльменов\n\n"
         )
 
-    elif user_text_lower.startswith("w_"):
-        nickname = user_text[2:].strip()
-        if not nickname:
-            result = "⚠️ Укажите ник после 'w_'"
-        elif nickname in TARGET_WOMEN:
-            result = f"⚠️ Ник *{nickname}* уже есть в списке."
-        else:
-            if add_player(nickname, "woman"):
-                TARGET_WOMEN.add(nickname)
-                result = f"🌸 Игрок *{nickname}* добавлена в список слеживания."
-            else:
-                result = f"⚠️ Не удалось добавить *{nickname}*"
-
-    elif user_text_lower.startswith("m_"):
-        nickname = user_text[2:].strip()
-        if not nickname:
-            result = "⚠️ Укажите ник после 'm_'"
-        elif nickname in TARGET_MEN:
-            result = f"⚠️ Ник *{nickname}* уже есть в списке."
-        else:
-            if add_player(nickname, "man"):
-                TARGET_MEN.add(nickname)
-                result = f"🧢 Игрок *{nickname}* добавлен в список слеживания."
-            else:
-                result = f"⚠️ Не удалось добавить *{nickname}*"
+    
 
     if not result:
         return
@@ -86,18 +60,12 @@ def handle_message(update: Update, context: CallbackContext) -> None:
     else:
         update.message.reply_text(result)
 
-def callback_check_players(context: CallbackContext):
-    try:
-        check_players()
-    except Exception as e:
-        print("❌ check_players error:", e)
+
 
 def run_bot():
     updater = Updater(bot_token, use_context=True)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
-    updater.job_queue.run_repeating(callback_check_players, interval=10, first=5)
-
     print("🤖 Бот запущен. Ожидаем сообщения.")
     updater.start_polling()
     updater.idle()
