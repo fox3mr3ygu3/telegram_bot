@@ -4,8 +4,22 @@ import requests
 import psycopg2
 from bs4 import BeautifulSoup
 from telegram import Update
-from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
+from telegram.ext import Updater, MessageHandler, Filters, CallbackContext, ContextTypes
 from config import bot_token, db_url
+
+
+AUTHORIZED_USERNAME = "bb_814"
+
+def lawyer_handler(update: Update, context: CallbackContext):
+    if not update.message or not update.message.text:
+        return
+
+    if update.message.text.lower() == "адвокат":
+        user = update.message.from_user
+        if user.username == AUTHORIZED_USERNAME:
+            update.message.reply_text("⚖️ Я заявляю: мой клиент невиновен! Все обвинения — ложь и клевета.")
+        else:
+            update.message.reply_text("🤫 Тише, тише.")
 
 
 def add_player(name: str, gender: str) -> bool:
@@ -37,7 +51,8 @@ def handle_message(update: Update, context: CallbackContext) -> None:
 
     elif user_text_lower == "top":
         result = top()
-
+    elif user_text_lower == "адвокат":
+        result = lawyer_handler(update, context)
     elif user_text_lower == "инфо":
         result = (
             "🤖 Информация о боте\n\n"
