@@ -57,7 +57,7 @@ def handle_message(update: Update, context: CallbackContext) -> None:
         result = (
             "🤖 Информация о боте\n\n"
             "Этот бот следит за CS 1.6 сервером:\n"
-            "`ONE RUSSIAN PUBLIC © (46.174.48.168:27015)`\n\n"
+            "`CODE RED © (95.181.158.132:27023)`\n\n"
             "📌 Команды:\n"
             "• сервер или server — текущая карта, онлайн и список игроков\n"
             "• top — топ игроков со статистикой\n"
@@ -86,8 +86,8 @@ def run_bot():
     updater.idle()
 
 def parser():
-    address = ("46.174.48.168", 27015)
-    result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n"
+    address = ("95.181.158.132", 27023)
+    result = "🌐 Сервер: CODE RED ©\n95.181.158.132:27023\n"
 
     try:
         info = a2s.info(address)
@@ -125,7 +125,7 @@ def top():
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n\n📋 Топ игроков:\n\n"
+    result = "🌐 Сервер: CODE RED ©\n95.181.158.132:27023\n\n📋 Топ игроков:\n\n"
     players = []
 
     try:
