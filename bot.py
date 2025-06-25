@@ -4,22 +4,8 @@ import requests
 import psycopg2
 from bs4 import BeautifulSoup
 from telegram import Update
-from telegram.ext import Updater, MessageHandler, Filters, CallbackContext, ContextTypes
+from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 from config import bot_token, db_url
-
-
-AUTHORIZED_USERNAME = "bb_814"
-
-def lawyer_handler(update: Update, context: CallbackContext):
-    if not update.message or not update.message.text:
-        return
-
-    if update.message.text.lower() == "адвокат":
-        user = update.message.from_user
-        if user.username == AUTHORIZED_USERNAME:
-            update.message.reply_text("⚖️ Я заявляю: мой клиент невиновен! Все обвинения — ложь и клевета.")
-        else:
-            update.message.reply_text("🤫 Тише, тише.")
 
 
 def add_player(name: str, gender: str) -> bool:
@@ -51,13 +37,12 @@ def handle_message(update: Update, context: CallbackContext) -> None:
 
     elif user_text_lower == "top":
         result = top()
-    elif user_text_lower == "адвокат":
-        result = lawyer_handler(update, context)
+
     elif user_text_lower == "инфо":
         result = (
             "🤖 Информация о боте\n\n"
             "Этот бот следит за CS 1.6 сервером:\n"
-            "`CODE RED © (46.174.49.228:27015)`\n\n"
+            "`ONE RUSSIAN PUBLIC © (46.174.48.168:27015)`\n\n"
             "📌 Команды:\n"
             "• сервер или server — текущая карта, онлайн и список игроков\n"
             "• top — топ игроков со статистикой\n"
@@ -86,8 +71,8 @@ def run_bot():
     updater.idle()
 
 def parser():
-    address = ("46.174.49.228", 27015)
-    result = "🌐 Сервер: CODE RED ©\n46.174.49.228:27015\n"
+    address = ("46.174.48.168", 27015)
+    result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n"
 
     try:
         info = a2s.info(address)
@@ -125,7 +110,7 @@ def top():
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    result = "🌐 Сервер: CODE RED ©\n46.174.49.228:27015\n\n📋 Топ игроков:\n\n"
+    result = "🌐 Сервер: ONE RUSSIAN PUBLIC ©\n46.174.48.168:27015\n\n📋 Топ игроков:\n\n"
     players = []
 
     try:
